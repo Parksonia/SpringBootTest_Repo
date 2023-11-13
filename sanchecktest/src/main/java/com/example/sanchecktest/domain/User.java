@@ -1,7 +1,6 @@
 package com.example.sanchecktest.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +14,13 @@ import java.util.Collection;
 @Getter
 @Entity
 public class User implements UserDetails {  // UserDetails 상속 받아 인증 객체로 사용
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id",updatable = false)
+    private Long id;
+
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

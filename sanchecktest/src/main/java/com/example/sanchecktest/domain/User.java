@@ -2,15 +2,18 @@ package com.example.sanchecktest.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.Collection;
+import java.util.List;
+
+
 @Table(name ="users")
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
 public class User implements UserDetails {  // UserDetails 상속 받아 인증 객체로 사용
@@ -20,40 +23,68 @@ public class User implements UserDetails {  // UserDetails 상속 받아 인증 
     @Column(name="id",updatable = false)
     private Long id;
 
+    @Column(name="email",nullable = false,unique = true)
+    private String email;
 
+ /*   @Column(name="user_id",nullable = false,unique = true)
+    private String user_id;*/
 
+    @Column(name="password")
+    private String password;
+
+    @Builder
+    public User(String email,String password,String auth) {
+       //this.user_id = user_id;
+        this.email = email;
+        this.password = password;
+    }
+
+    // 권한 반환
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return List.of(new SimpleGrantedAuthority("user"));  // 일단은 권한을 사용자만 만들어 뒀기때문에 user권한만 담아서 반환
     }
-
+    //사용자의 패스워드 반환
     @Override
     public String getPassword() {
-        return null;
+        return password;
     }
 
+    //사용자의 고유한 값 email를 반환
     @Override
     public String getUsername() {
-        return null;
+        return email;
     }
 
+
+    //계정 만료 여부 반환
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        //만료 여부 확인 로직 추가하기
+
+        return true; // true -> 만료되지않음
     }
 
+    //계정 잠금 여부 반환
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        //로직 추가
+
+        return true;
     }
 
+    //패스워드 만료 여부 반환
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        //로직 추가
+        return true; // true -> 만료 안됨
     }
 
+    //계정 사용 가능 여부 반환
     @Override
     public boolean isEnabled() {
-        return false;
+
+        //계정 사용 가능 한지 확인하는 로직 추가
+        return true;  //true ->사용 가능
     }
 }

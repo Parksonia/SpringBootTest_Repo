@@ -50,10 +50,10 @@ public class User implements UserDetails {  // UserDetails 상속 받아 인증 
         return password;
     }
 
-    //사용자의 고유한 값 email를 반환
+    //사용자를 식별할 수 있는 고유한 값 email를 반환
     @Override
     public String getUsername() {
-        return email;
+        return email; //unique속성을 적용한 email을 사용함(고유성)
     }
 
 

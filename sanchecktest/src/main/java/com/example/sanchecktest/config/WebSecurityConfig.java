@@ -5,13 +5,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -20,7 +18,7 @@ import static org.springframework.boot.autoconfigure.security.servlet.PathReques
 
 @RequiredArgsConstructor  //생성자 생략 가능 의존성 자동 주입
 @Configuration
-@EnableWebSecurity(debug = true) // 운용 환경에서는 꼭 꺼야함
+@EnableWebSecurity(debug = true) // 운용 환경에서는 꼭 꺼야함!!!!! 얘때문에 정확한 에러 정보 콘솔에서 확인하기 어려웠던 것 같음
 public class WebSecurityConfig {  // 실제 인증 처리를 하는 config.java
 
   private final UserDetailService userService;
@@ -44,8 +42,11 @@ public class WebSecurityConfig {  // 실제 인증 처리를 하는 config.java
 
        return http
                .authorizeHttpRequests((authorizeHttpRequests)-> authorizeHttpRequests
+                       // .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll() //!!!!컨트롤러에서 화면 파일명을 리턴해 화면을 바꾸는 경우 추가!!!!!!
                         .requestMatchers(new AntPathRequestMatcher("/**"),
-                                         new AntPathRequestMatcher("/login")).permitAll())
+                                         new AntPathRequestMatcher("/login"),
+                                         new AntPathRequestMatcher("/signup")
+                                         ).permitAll())
 
                .formLogin(loginform -> loginform
                        .loginPage("/login")
@@ -64,7 +65,9 @@ public class WebSecurityConfig {  // 실제 인증 처리를 하는 config.java
 
     }
 
-    //인증 관리자 설정
+
+
+ //인증 관리자 설정
 
     @Bean
   public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder,UserDetailService userDetailService)
@@ -78,9 +81,7 @@ public class WebSecurityConfig {  // 실제 인증 처리를 하는 config.java
     }
 
 
-
-/*
-    //인증 관리자 설정
+/*    //인증 관리자 설정
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() throws Exception {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
@@ -89,10 +90,7 @@ public class WebSecurityConfig {  // 실제 인증 처리를 하는 config.java
         daoAuthenticationProvider.setPasswordEncoder(bCryptPasswordEncoder());
 
         return daoAuthenticationProvider;
-    }
-*/
-
-
+    }*/
 
     //패스워드 인코더로 사용할 빈 등록
     @Bean

@@ -18,10 +18,16 @@ public class UserController {
     public String login() {
         return "login";
     }
+
     @PostMapping("/user")
     public String signUp(AddUserDTO adduser) {
 
         userService.save(adduser);
         return "redirect:/login";
+    }
+
+    @GetMapping("/signup")
+    public String signup() {
+        return "signup";
     }
 }

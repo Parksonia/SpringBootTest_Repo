@@ -23,8 +23,12 @@
                     <form th:action="@{/login}" method="POST">
                         <input type="hidden" th:name="${_csrf?.parameterName}" th:value="${_csrf?.token}" />
                         <div class="mb-3">
+                            <label class="form-label text-white">Userid</label>
+                            <input type="text" class="form-control" name="username">  <!--name주의 repo에서 findByUserid식별자로 아이디 정보 찾게됨-->
+                        </div>
+                        <div class="mb-3">
                             <label class="form-label text-white">Email address</label>
-                            <input type="email" class="form-control" name="username">  <!--name주의 repo에서 findByEmail식별자로 아이디 정보 찾게됨-->
+                            <input type="email" class="form-control" name="email">  <!--name주의 repo에서 findByEmail식별자로 아이디 정보 찾게됨-->
                         </div>
                         <div class="mb-3">
                             <label class="form-label text-white">Password</label>

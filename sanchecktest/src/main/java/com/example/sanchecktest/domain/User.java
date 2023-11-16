@@ -26,16 +26,17 @@ public class User implements UserDetails {  // UserDetails 상속 받아 인증 
     @Column(name="email",nullable = false,unique = true)
     private String email;
 
- /*   @Column(name="user_id",nullable = false,unique = true)
-    private String user_id;*/
+    @Column(name="userid",nullable = false,unique = true)
+    private String userid;
 
     @Column(name="password")
     private String password;
 
     @Builder
-    public User(String email,String password,String auth) {
+    public User(String email,String password,String userid,String auth) {
        //this.user_id = user_id;
         this.email = email;
+        this.userid =userid;
         this.password = password;
     }
 
@@ -50,10 +51,10 @@ public class User implements UserDetails {  // UserDetails 상속 받아 인증 
         return password;
     }
 
-    //사용자를 식별할 수 있는 고유한 값 email를 반환
+    //사용자를 식별할 수 있는 고유한 값 email를 반환,userid로 바꿈
     @Override
     public String getUsername() {
-        return email; //unique속성을 적용한 email을 사용함(고유성)
+        return userid; //unique속성을 적용한 userid을 사용함(고유성)
     }
 
 

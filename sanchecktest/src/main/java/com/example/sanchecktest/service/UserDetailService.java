@@ -13,9 +13,16 @@ import org.springframework.stereotype.Service;
 public class UserDetailService implements UserDetailsService {
 
     private  final UserRepository userRepository;
-    //사용자 user_id로 사용자의 정보를 가져오는 메서드
+
     @Override
+    public UserDetails loadUserByUsername(String userid) throws UsernameNotFoundException {
+        return userRepository.findByUserid(userid).orElseThrow(() ->new IllegalArgumentException(userid));
+    }
+    //사용자 email(고유값)로 사용자의 정보를 가져오는 메서드
+ /*   @Override
     public UserDetails loadUserByUsername(String email)  {
         return userRepository.findByEmail(email).orElseThrow(() ->new IllegalArgumentException(email));
-    }
+    }*/
+
+
 }

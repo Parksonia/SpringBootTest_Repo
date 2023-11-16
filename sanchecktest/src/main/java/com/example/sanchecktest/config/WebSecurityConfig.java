@@ -18,7 +18,7 @@ import static org.springframework.boot.autoconfigure.security.servlet.PathReques
 
 @RequiredArgsConstructor  //생성자 생략 가능 의존성 자동 주입
 @Configuration
-@EnableWebSecurity(debug = true) // 운용 환경에서는 꼭 꺼야함!!!!! 얘때문에 정확한 에러 정보 콘솔에서 확인하기 어려웠던 것 같음
+@EnableWebSecurity // 스프링 시큐리티 활성화
 public class WebSecurityConfig {  // 실제 인증 처리를 하는 config.java
 
   private final UserDetailService userService;

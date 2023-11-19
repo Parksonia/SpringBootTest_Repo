@@ -15,7 +15,8 @@ public class UserService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public Long save(AddUserDTO addUserDTO) {
-        return userRepository.save(User.builder().email(addUserDTO.getEmail())
+        return userRepository.save(User.builder()
+                .email(addUserDTO.getEmail())
                 .userid(addUserDTO.getUserid())
                 .password(bCryptPasswordEncoder.encode(addUserDTO.getPassword()))
                 .build()).getId();

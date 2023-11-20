@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -48,10 +49,11 @@ public class WebSecurityConfig {  // 실제 인증 처리를 하는 config.java
                                          new AntPathRequestMatcher("/signup")
                                          ).permitAll())
 
-               .formLogin(loginform -> loginform
+              .formLogin(loginform -> loginform
                        .loginPage("/login")
                        .defaultSuccessUrl("/")
                )
+
                .logout(logout -> logout
                        .logoutSuccessUrl("/login")
                        .invalidateHttpSession(true)  //로그아웃하고 세션 정보 삭제 여부

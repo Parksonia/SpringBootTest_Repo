@@ -28,8 +28,8 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         //가져온 값에서 접두사 제거
         String token = getAccessToekn(authorizationHeader);
 
-        //가져온 토큰이 유효한지 확인하고, 유효한 떄는 인증 정보를 설정
-        if(tokenProvider.validateToken(token)) {  //유효한가?
+        //가져온 토큰이 유효한 지 확인하고, 유효한 떄는 인증 정보를 설정
+        if(tokenProvider.validateToken(token)) {  //유효 한가?
             Authentication authentication = tokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication); //유효한 정보를 담은 인증 객체 설정
         }

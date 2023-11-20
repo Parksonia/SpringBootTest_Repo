@@ -22,4 +22,11 @@ public class UserService {
                 .build()).getId();
     }
 
+
+    // 유저를 받아서 검색 후 리포지토리로 전달
+    public User findById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("Unexpected user"));
+
+    }
 }

@@ -40,6 +40,9 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 	//XML 문서와 Java 객체 간 매핑을 자동화 해줌
 	implementation 'javax.xml.bind:jaxb-api:2.3.1'
+	//OAuth2.0를 사용하기 위한 스타터
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
 }
 
 tasks.named('bootBuildImage') {

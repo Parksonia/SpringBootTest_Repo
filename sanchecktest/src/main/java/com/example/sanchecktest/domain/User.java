@@ -21,24 +21,34 @@ public class User implements UserDetails {  // UserDetails 상속 받아 인증 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id",updatable = false)
-    private Long id;
+    private Long id; //번호
 
     @Column(name="email",nullable = false,unique = true)
     private String email;
 
     @Column(name="userid",nullable = false,unique = true)
-    private String userid;
+    private String userid; //id
 
     @Column(name="password")
     private String password;
 
+    @Column(name="nickname" , unique = true)
+    private String nickname;
+
+
     @Builder
-    public User(String email,String password,String userid,String auth) {
-       //this.user_id = user_id;
+    public User(String email,String password,String userid,String nickname,String auth) {
+        this.nickname = nickname;
         this.email = email;
         this.userid =userid;
         this.password = password;
     }
+    //사용자 이름 변경
+    public User update(String nickname){
+        this.nickname = nickname;
+        return this;
+    }
+
 
     // 권한 반환
     @Override
@@ -51,10 +61,10 @@ public class User implements UserDetails {  // UserDetails 상속 받아 인증 
         return password;
     }
 
-    //사용자를 식별할 수 있는 고유한 값 email를 반환,userid로 바꿈
+    //사용자를 식별할 수 있는 고유한 값 email를 반환
     @Override
     public String getUsername() {
-        return userid; //unique속성을 적용한 userid을 사용함(고유성)
+        return email; //unique속성을 적용한 userid을 사용함(고유성)
     }
 
 

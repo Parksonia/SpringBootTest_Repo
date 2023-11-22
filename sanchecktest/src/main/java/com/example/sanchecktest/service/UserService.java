@@ -17,7 +17,7 @@ public class UserService {
     public Long save(AddUserDTO addUserDTO) {
         return userRepository.save(User.builder()
                 .email(addUserDTO.getEmail())
-                .userid(addUserDTO.getUserid())
+             /*   .userid(addUserDTO.getUserid())*/
                 .password(bCryptPasswordEncoder.encode(addUserDTO.getPassword()))
                 .build()).getId();
     }
@@ -29,4 +29,10 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("Unexpected user"));
 
     }
+    //OAuth email(유일값) 으로 로그인 처리하기 위한 메서드 추가
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(()->new IllegalArgumentException("Unexpected user"));
+     }
+
 }

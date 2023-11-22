@@ -26,9 +26,9 @@ public class User implements UserDetails {  // UserDetails 상속 받아 인증 
     @Column(name="email",nullable = false,unique = true)
     private String email;
 
-    @Column(name="userid",nullable = false,unique = true)
+ /*   @Column(name="userid",nullable = false,unique = true)
     private String userid; //id
-
+*/
     @Column(name="password")
     private String password;
 
@@ -37,10 +37,10 @@ public class User implements UserDetails {  // UserDetails 상속 받아 인증 
 
 
     @Builder
-    public User(String email,String password,String userid,String nickname,String auth) {
+    public User(String email,String password,String nickname,String auth) {
         this.nickname = nickname;
         this.email = email;
-        this.userid =userid;
+     /*   this.userid =userid;*/
         this.password = password;
     }
     //사용자 이름 변경

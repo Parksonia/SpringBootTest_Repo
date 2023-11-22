@@ -15,8 +15,8 @@ public class UserDetailService implements UserDetailsService {
     private  final UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String userid) throws UsernameNotFoundException {
-        return userRepository.findByUserid(userid).orElseThrow(() ->new IllegalArgumentException(userid));
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return userRepository.findByEmail(email).orElseThrow(() ->new IllegalArgumentException(email));
     }
     //사용자 email(고유값)로 사용자의 정보를 가져오는 메서드
  /*   @Override

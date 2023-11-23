@@ -23,12 +23,13 @@ public class UserService {
     }
 
 
-    // 유저를 받아서 검색 후 리포지토리로 전달
+   // token 유저를 받아서 검색 후 리포지토리로 전달
     public User findById(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("Unexpected user"));
 
     }
+
     //OAuth email(유일값) 으로 로그인 처리하기 위한 메서드 추가
     public User findByEmail(String email) {
         return userRepository.findByEmail(email)

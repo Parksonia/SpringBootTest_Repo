@@ -12,7 +12,7 @@ public class AddUserDTO {
 
     private String email;
 
-    private String userid;
+   // private String userid;
 
     private String password;
 

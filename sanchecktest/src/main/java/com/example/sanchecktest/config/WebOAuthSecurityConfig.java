@@ -57,6 +57,7 @@ public class WebOAuthSecurityConfig {  // 실제 인증 처리를 하는 config.
     private final UserService userService;
 
     //스프링 시큐리티 기능 비활성화 - 정적 리소스(static 하위 img등의 resource),h2 console 하위 url에 설정
+
     @Bean
     public WebSecurityCustomizer configure() {
         return (web) -> web.ignoring()
@@ -68,14 +69,15 @@ public class WebOAuthSecurityConfig {  // 실제 인증 처리를 하는 config.
                 );
     }
 
+
     //특정 HTTP요청에 대한 웹기반 보안 구성
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
 
         return http
-                .authorizeHttpRequests((authorizeHttpRequests)-> authorizeHttpRequests
-                        // .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll() //!!!!컨트롤러에서 화면 파일명을 리턴해 화면을 바꾸는 경우 추가!!!!!!
+                .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
+                         //.dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll() //!!!!컨트롤러에서 화면 파일명을 리턴해 화면을 바꾸는 경우 추가!!!!!!
                         .requestMatchers(new AntPathRequestMatcher("/**"),
                                 new AntPathRequestMatcher("/login"),
                                 new AntPathRequestMatcher("/signup")
@@ -103,26 +105,28 @@ public class WebOAuthSecurityConfig {  // 실제 인증 처리를 하는 config.
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class) //헤더를 확인할 커스텀 필터
-                .authorizeHttpRequests((authorizeHttpRequests)-> authorizeHttpRequests  //토큰 재발급 URL은 인증 없이 접근 가능하도록 설정
-                        .requestMatchers( new AntPathRequestMatcher("/api/token")).permitAll()
-                        .requestMatchers( new AntPathRequestMatcher("/api/**")).authenticated().anyRequest().permitAll()) //나머지 API URL은 인증필요
+                .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests  //토큰 재발급 URL은 인증 없이 접근 가능하도록 설정
+                        .requestMatchers(new AntPathRequestMatcher("/api/token")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/api/**")).authenticated().anyRequest().permitAll()) //나머지 API URL은 인증필요
 
-                .oauth2Login(oauth2 ->oauth2
+                .oauth2Login(oauth2 -> oauth2
                         .loginPage("/login")
                         //Authorization 요청과 관련된 상태 저장
                         .authorizationEndpoint(authorization -> authorization
                                 .authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository()))
                         .successHandler(oAuth2SuccessHandler())
-                        .userInfoEndpoint(userInfo ->userInfo
+                        .userInfoEndpoint(userInfo -> userInfo
                                 .userService(oAuth2UserCustomService))
+
                 )
-                .exceptionHandling(exception ->exception // /api로 시작하는 url인 경우 401 상태 코드를 반환하도록 예외 처리
+                .exceptionHandling(exception -> exception // /api로 시작하는 url인 경우 401 상태 코드를 반환하도록 예외 처리
                         .defaultAuthenticationEntryPointFor(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED),
                                 new AntPathRequestMatcher("/api/**"))
                 )
                 .build();
 
     }
+
     //OAuth2 인증 성공 시 실행할 핸들러 설정
     @Bean
     public OAuth2SuccessHandler oAuth2SuccessHandler() {
@@ -147,7 +151,7 @@ public class WebOAuthSecurityConfig {  // 실제 인증 처리를 하는 config.
 
     //인증 관리자 설정
     @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder,UserDetailService userDetailService)
+    public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder, UserDetailService userDetailService)
             throws Exception {
 
         return http.getSharedObject(AuthenticationManagerBuilder.class)
@@ -157,7 +161,9 @@ public class WebOAuthSecurityConfig {  // 실제 인증 처리를 하는 config.
                 .build();
     }
 
+
 /*
+
    //인증 관리자 설정
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() throws Exception {
@@ -167,7 +173,9 @@ public class WebOAuthSecurityConfig {  // 실제 인증 처리를 하는 config.
         daoAuthenticationProvider.setPasswordEncoder(bCryptPasswordEncoder());
 
         return daoAuthenticationProvider;
-    }*/
+    }
+*/
+
 
 
     //패스워드 인코더로 사용할 빈 등록
@@ -177,10 +185,12 @@ public class WebOAuthSecurityConfig {  // 실제 인증 처리를 하는 config.
     }
 
 
-/*  @Bean
+    @Bean
     public ClientRegistrationRepository clientRegistrationRepository() {
         return new InMemoryClientRegistrationRepository(this.googleClientRegistration());
     }
+
+
 
     private ClientRegistration googleClientRegistration() {
         return ClientRegistration.withRegistrationId("google")
@@ -197,5 +207,5 @@ public class WebOAuthSecurityConfig {  // 실제 인증 처리를 하는 config.
                 .jwkSetUri("https://www.googleapis.com/oauth2/v3/certs")
                 .clientName("Google")
                 .build();
-    }*/
+    }
 }
